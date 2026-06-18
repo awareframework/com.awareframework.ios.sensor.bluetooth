@@ -1,5 +1,7 @@
 # AWARE: Bluetooth
 
+[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+
 The Bluetooth sensor scans nearby Bluetooth Low Energy (BLE) advertisements on iOS and stores discovered peripherals with RSSI values. It follows the AWARE iOS sensor package style and writes to the same table layout as the previous Bluetooth library format:
 
 - `ios_bluetooth`
