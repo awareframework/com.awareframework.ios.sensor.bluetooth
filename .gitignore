@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Swift Package Manager
+/.build
+/Packages
+.swiftpm/
+
+# Xcode
+build/
+xcuserdata/
+DerivedData/
+
+# Editor
+.*.sw?
+
+# Credentials
+.netrc
