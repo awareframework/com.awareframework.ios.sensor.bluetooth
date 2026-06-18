@@ -1,4 +1,4 @@
-# AWARE Bluetooth Sensor
+# AWARE: Bluetooth
 
 The Bluetooth sensor scans nearby Bluetooth Low Energy (BLE) advertisements on iOS and stores discovered peripherals with RSSI values. It follows the AWARE iOS sensor package style and writes to the same table layout as the previous Bluetooth library format:
 
@@ -23,7 +23,7 @@ Then import the module:
 import com_awareframework_ios_sensor_bluetooth
 ```
 
-## Usage
+## Example Usage
 
 ```swift
 let sensor = BluetoothSensor(BluetoothSensor.Config().apply { config in
@@ -59,18 +59,18 @@ For background BLE scanning, add the central background mode:
 </array>
 ```
 
-## Configuration
+### BluetoothSensor.Config
 
-`BluetoothSensor.Config` extends the common AWARE `SensorConfig`.
+Class to hold the configuration of the sensor.
 
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
-| `scanIntervalSeconds` | `Double` | `60.0` | Seconds between scan starts. Set `0` for continuous scanning. |
-| `scanDurationSeconds` | `Double` | `3.0` | Seconds to keep each BLE scan window open. The default mirrors Android AWARE's BLE scan window. |
-| `allowDuplicates` | `Bool` | `false` | Whether CoreBluetooth should report and store duplicate advertisements during a scan window. Android AWARE stores a peripheral once per BLE scan window. |
-| `sensorObserver` | `BluetoothObserver?` | `nil` | Callback for live scan events and BLE detections. |
-| `dbPath` | `String` | `aware_bluetooth` | SQLite database path stem. |
-| `dbTableName` | `String?` | `ios_bluetooth` | Active database table name. |
+#### Fields
+
++ `scanIntervalSeconds: Double`: Seconds between scan starts. Set `0` for continuous scanning. (default = `60.0`)
++ `scanDurationSeconds: Double`: Seconds to keep each BLE scan window open. The default mirrors Android AWARE's BLE scan window. (default = `3.0`)
++ `allowDuplicates: Bool`: Whether CoreBluetooth should report and store duplicate advertisements during a scan window. Android AWARE stores a peripheral once per BLE scan window. (default = `false`)
++ `sensorObserver: BluetoothObserver?`: Callback for live scan events and BLE detections. (default = `nil`)
++ `dbPath: String`: SQLite database path stem. (default = `"aware_bluetooth"`)
++ `dbTableName: String?`: Active database table name. (default = `"ios_bluetooth"`)
 
 ## Duty Cycle
 
@@ -86,7 +86,7 @@ When `scanIntervalSeconds` is `0`, the sensor keeps scanning continuously until 
 
 For example, with the defaults, the sensor scans for 3 seconds once every 60 seconds. This is intentionally conservative and follows the Android sensor's recommendation that Bluetooth scanning should use a 60 second or higher interval.
 
-## Data Model
+## Data Representations
 
 Records are stored under `aware_bluetooth.sqlite`.
 
@@ -136,7 +136,7 @@ CSV header:
 id,timestamp,deviceId,address,jsonVersion,label,name,os,timezone
 ```
 
-## Notifications
+## Broadcasts
 
 | Notification | Description |
 | --- | --- |
