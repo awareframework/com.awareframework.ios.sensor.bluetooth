@@ -202,3 +202,9 @@ The current sensor is scan-only and does not connect to peripherals. It stores B
 - MAC addresses are not available. Use `address` only as an iOS-scoped peripheral identifier.
 - Peripheral identifiers may change after system resets, device restores, or privacy-related changes.
 - Background scanning may receive fewer discoveries than foreground scanning.
+
+## Related Links
+
+- [Core Bluetooth | Apple Developer Documentation](https://developer.apple.com/documentation/corebluetooth)
+- [CBCentralManager | Apple Developer Documentation](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager)
+- [CBPeripheral | Apple Developer Documentation](https://developer.apple.com/documentation/corebluetooth/cbperipheral)
