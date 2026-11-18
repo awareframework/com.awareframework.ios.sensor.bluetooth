@@ -13,17 +13,15 @@ The scan scheduler follows the Android AWARE Bluetooth sensor design: a scan run
 
 ## Installation
 
-Add the package to your app target:
+Add the package with Swift Package Manager:
 
-```text
-https://github.com/awareframework/com.awareframework.ios.sensor.bluetooth.git
-```
+- Package URL: `https://github.com/awareframework/com.awareframework.ios.sensor.bluetooth.git`
+- Product: `com.awareframework.ios.sensor.bluetooth`
+- Module: `import com_awareframework_ios_sensor_bluetooth`
 
-Then import the module:
+See the [core package README](https://github.com/awareframework/com.awareframework.ios.core#installation) for the Xcode, `Package.swift` and command-line installation steps.
 
-```swift
-import com_awareframework_ios_sensor_bluetooth
-```
+**Info.plist:** `NSBluetoothAlwaysUsageDescription`.
 
 ## Example Usage
 
