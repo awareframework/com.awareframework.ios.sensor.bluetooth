@@ -146,30 +146,39 @@ public class BluetoothSensor: AwareSensor {
     }
 
     public override func sync(force: Bool = false) {
-        guard let engine = dbEngine, let syncConfig = syncConfig else { return }
-        syncConfig.debug = CONFIG.debug
-        engine.startSync(syncConfig.apply { setting in
-            setting.completionHandler = { status, error in
+        guard let baseEngine = dbEngine, let baseSyncConfig = syncConfig else { return }
+        let tables: [(name: String, type: Any.Type)] = [
+            (BluetoothDeviceData.databaseTableName, BluetoothDeviceData.self),
+            (BluetoothData.databaseTableName, BluetoothData.self),
+        ]
+        for table in tables {
+            let engine = table.name == baseEngine.config.tableName
+                ? baseEngine
+                : Engine.Builder()
+                    .setType(baseEngine.config.type)
+                    .setPath(baseEngine.config.path)
+                    .setHost(baseEngine.config.host)
+                    .setEncryptionKey(baseEngine.config.encryptionKey)
+                    .setTableName(table.name)
+                    .build()
+            let tableSyncConfig = baseSyncConfig.copy()
+            tableSyncConfig.debug = CONFIG.debug
+            tableSyncConfig.dispatchQueue = DispatchQueue(
+                label: "com.awareframework.ios.sensor.bluetooth.sync.\(table.name)")
+            tableSyncConfig.completionHandler = { status, error in
                 var userInfo: Dictionary<String, Any> = [
                     Self.EXTRA_STATUS: status,
-                    Self.EXTRA_TABLE_NAME: BluetoothDeviceData.databaseTableName,
-                    Self.EXTRA_OBJECT_TYPE: BluetoothDeviceData.self,
+                    Self.EXTRA_TABLE_NAME: table.name,
+                    Self.EXTRA_OBJECT_TYPE: table.type,
                 ]
                 if let error { userInfo[Self.EXTRA_ERROR] = error }
-                self.notificationCenter.post(name: .actionAwareBluetoothSyncCompletion, object: self, userInfo: userInfo)
+                self.notificationCenter.post(
+                    name: .actionAwareBluetoothSyncCompletion,
+                    object: self,
+                    userInfo: userInfo)
             }
-        })
-        engine.startSync(syncConfig.apply { setting in
-            setting.completionHandler = { status, error in
-                var userInfo: Dictionary<String, Any> = [
-                    Self.EXTRA_STATUS: status,
-                    Self.EXTRA_TABLE_NAME: BluetoothData.databaseTableName,
-                    Self.EXTRA_OBJECT_TYPE: BluetoothData.self,
-                ]
-                if let error { userInfo[Self.EXTRA_ERROR] = error }
-                self.notificationCenter.post(name: .actionAwareBluetoothSyncCompletion, object: self, userInfo: userInfo)
-            }
-        })
+            engine.startSync(tableSyncConfig)
+        }
         notificationCenter.post(name: .actionAwareBluetoothSync, object: self)
     }
 
